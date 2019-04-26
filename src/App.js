@@ -1,55 +1,57 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import restaurants from './Restaurants';
-import Menu from './Menu';
-import RestaurantByType from './RestaurantByType';
-import Type from './Type'
+import CuisineList from './CuisineList';
+import RestaurantList from './RestaurantList';
+import MenuList from './MenuList';
 
-//const restArray = restaurants.map((rest) => {restArray.push(rest)});
-
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: '',
-      restaurants: restaurants.props
+      cuisine: '',
+      restaurants: ''
     }
+    
   }
   render() {
-
+    
     return (
       <div className="App">
         <header className="App-header">
-          <Type types={Object.keys
-          (this.state.restaurants)}/>
-          <select
-            onChange={this._filterType}
-          >
-          <option value="american">American</option>
-          <option value="mediterranean">Mediterranean</option>
-          <option value="mexican">Mexican</option>
-          </select>
-          <RestaurantByType onClick={this._handleCliic}
-          type={this.state.type} allRestaurants=
-          {this.state.type}/>
-          <Menu restaurant={this.state.restaurant} type=
-          {this.state.type} allRestaurants=
-          {this.state.restaurants}/>
-        </header>
-      </div>
-    );
+          <CuisineList 
+            cuisine={Object.keys(restaurants)}
+            handleClick={this._setRestaurant}
+          />
+          {
+            this.state.cuisine ? <RestaurantList 
+                                        restaurants={Object.keys(restaurants[this.state.cuisine])}
+                                        handleClick={this._setMenu}
+                                      />
+                                      : null
+          }
+          {
+            this.state.restaurants ? <MenuList 
+                                        food={restaurants[this.state.cuisine][this.state.restaurants]}
+                                      />
+                                      : null
+          } 
+          </header>
+        </div>
+    )
   }
-  _filterType = (e) => {
+  _setRestaurant = (cuisine) => {
     this.setState({
-      type: e.target.value,
-      restaurant: ''
+      cuisine,
+      restaurants: ''
     })
   }
-  _handleCliick = (e) => {
+  _setMenu = (restaurants) => {
     this.setState({
-      restaurant: e.target.textContent
+      restaurants
     })
   }
 }
+
 
 export default App;
